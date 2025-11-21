@@ -1,0 +1,88 @@
+LAB-5 CODE EXAMPLES — EXPLANATIONS 
+
+EXERCISE 1: Using fork() in C (process_creation.c)
+
+This program is a basic demonstration of how a new process can be created in Linux using the fork() system call.  
+When fork() is executed, the operating system duplicates the current process, resulting in two separate processes that continue running the same program from the same point.
+
+Explanation:
+- If fork() returns 0, the code is running in the child process.
+- If it returns a positive value, that value represents the child's PID, and we are in the parent process.
+- If it returns -1, the system was unable to create a new process.
+
+In summary:
+1. The program calls fork().
+2. The child process prints its PID.
+3. The parent process prints its own PID.
+4. If something goes wrong, an error message is printed.
+
+This example shows how concurrency can start from a single running program.
+
+
+EXERCISE 5: Role of the Linker (file1.c and file2.c)
+
+These two files are meant to show how linking works when building multi‑file C programs.
+
+file1.c:
+- Contains the actual implementation of the function hello().
+
+file2.c:
+- Declares hello() so that the compiler knows it exists.
+- Contains main(), which calls hello().
+
+What happens:
+1. Both C files are compiled separately into object files.
+2. The linker then takes these object files and connects them.
+3. It finds the definition of hello() in file1.c and resolves the reference used in file2.c.
+4. The final result is a single executable that has all required code.
+
+This highlights how separate compilation and linking allow structuring programs across multiple source files.
+
+
+EXERCISE 6: Role of the Loader (simple_program.c)
+
+The program here is straightforward, but it's used to examine which shared libraries are required at runtime.
+
+Explanation:
+- The program prints a message and exits immediately.
+
+After compiling it, running:
+ldd simple_program
+will show the shared libraries that will be loaded when the program executes.  
+This demonstrates the loader’s role in preparing external components before the program begins running.
+
+
+WHAT IS THE JOB OF THE LINKER?
+
+The Linker is responsible for taking one or more object files produced by the compiler and combining them into a single final executable.
+
+Key responsibilities:
+1. Symbol Resolution  
+   Ensures that references to functions and variables across different files point to the correct definitions.
+
+2. Relocation  
+   Assigns final memory addresses for code and data sections and adjusts internal references accordingly.
+
+3. Library Handling  
+   Connects the program to static or dynamic libraries and resolves required external functions (such as printf).
+
+4. Error Reporting  
+   Detects undefined functions, duplicate symbol definitions, and other inconsistencies.
+
+In short: the linker is what transforms compiled pieces into a unified, runnable program.
+
+
+WHAT IS THE JOB OF THE LOADER?
+
+The Loader is part of the operating system, and it is responsible for getting a program ready to run once you execute it.
+
+Its main tasks:
+1. Loads the executable into memory.
+2. Sets up memory regions (code, data, heap, stack).
+3. Loads required shared libraries.
+4. Adjusts addresses depending on where the program is placed in memory.
+5. Transfers control to the program’s entry point.
+
+When you run ldd on an executable, it shows the shared libraries that the loader will map into memory before the program starts running.
+
+This process ensures the program has everything it needs before executing the first instruction.
